@@ -1,0 +1,206 @@
+{
+  "name": "antonys-code-fixer",
+  "displayName": "Antony's Code Fixer",
+  "description": "AI-powered code error detection and fixing using Gemini API",
+  "version": "1.4.1",
+  "publisher": "antonyalex-2202",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/your-username/gemini-code-fixer"
+  },
+  "keywords": [
+    "ai",
+    "gemini",
+    "code-fixer",
+    "error-detection",
+    "debugging",
+    "code-quality"
+  ],
+  "engines": {
+    "vscode": "^1.74.0"
+  },
+  "categories": [
+    "Other"
+  ],
+  "activationEvents": [
+    "onStartupFinished"
+  ],
+  "main": "./out/extension.js",
+  "contributes": {
+    "commands": [
+      {
+        "command": "antonys-code-fixer.fixErrors",
+        "title": "Fix Code Errors with Antony's AI",
+        "icon": "$(wand)"
+      },
+      {
+        "command": "antonys-code-fixer.revertChanges",
+        "title": "Revert Antony's Changes",
+        "icon": "$(discard)"
+      },
+      {
+        "command": "antonys-code-fixer.revertAllChanges",
+        "title": "Revert All Antony's Changes",
+        "icon": "$(discard)"
+      },
+      {
+        "command": "antonys-code-fixer.analyzeProject",
+        "title": "Analyze Entire Project",
+        "icon": "$(search)"
+      },
+      {
+        "command": "antonys-code-fixer.fixProject",
+        "title": "Fix All Project Errors",
+        "icon": "$(tools)"
+      },
+      {
+        "command": "antonys-code-fixer.analyzeFolder",
+        "title": "Analyze This Folder",
+        "icon": "$(folder)"
+      },
+      {
+        "command": "antonys-code-fixer.fixFolder",
+        "title": "Fix All Folder Errors",
+        "icon": "$(folder-active)"
+      },
+      {
+        "command": "antonys-code-fixer.analyzeWorkspace",
+        "title": "Analyze Workspace Root",
+        "icon": "$(root-folder)"
+      },
+      {
+        "command": "antonys-code-fixer.fixWorkspace",
+        "title": "Fix All Workspace Errors",
+        "icon": "$(root-folder-opened)"
+      },
+      {
+        "command": "antonys-code-fixer.testAnalysis",
+        "title": "Test Current File Analysis (Debug)",
+        "icon": "$(bug)"
+      }
+    ],
+    "menus": {
+      "editor/context": [
+        {
+          "command": "antonys-code-fixer.fixErrors",
+          "group": "1_modification",
+          "when": "editorHasSelection || editorTextFocus"
+        },
+        {
+          "command": "antonys-code-fixer.revertChanges",
+          "group": "1_modification",
+          "when": "antonys-code-fixer.hasChanges"
+        },
+        {
+          "command": "antonys-code-fixer.revertAllChanges",
+          "group": "1_modification",
+          "when": "antonys-code-fixer.hasAnyChanges"
+        }
+      ],
+      "editor/title": [
+        {
+          "command": "antonys-code-fixer.fixErrors",
+          "group": "navigation",
+          "when": "editorTextFocus"
+        },
+        {
+          "command": "antonys-code-fixer.revertChanges",
+          "group": "navigation",
+          "when": "antonys-code-fixer.hasChanges"
+        },
+        {
+          "command": "antonys-code-fixer.revertAllChanges",
+          "group": "navigation",
+          "when": "antonys-code-fixer.hasAnyChanges"
+        }
+      ],
+      "explorer/context": [
+        {
+          "command": "antonys-code-fixer.analyzeFolder",
+          "group": "2_workspace",
+          "when": "explorerResourceIsFolder"
+        },
+        {
+          "command": "antonys-code-fixer.fixFolder",
+          "group": "2_workspace",
+          "when": "explorerResourceIsFolder"
+        },
+        {
+          "command": "antonys-code-fixer.analyzeWorkspace",
+          "group": "2_workspace",
+          "when": "explorerResourceIsRoot"
+        },
+        {
+          "command": "antonys-code-fixer.fixWorkspace",
+          "group": "2_workspace",
+          "when": "explorerResourceIsRoot"
+        }
+      ],
+      "view/title": [
+        {
+          "command": "antonys-code-fixer.analyzeWorkspace",
+          "group": "navigation",
+          "when": "view == workbench.explorer.fileView"
+        },
+        {
+          "command": "antonys-code-fixer.fixWorkspace",
+          "group": "navigation",
+          "when": "view == workbench.explorer.fileView"
+        }
+      ],
+      "commandPalette": [
+        {
+          "command": "antonys-code-fixer.analyzeProject",
+          "when": "workspaceFolderCount > 0"
+        },
+        {
+          "command": "antonys-code-fixer.fixProject",
+          "when": "workspaceFolderCount > 0"
+        },
+        {
+          "command": "antonys-code-fixer.analyzeWorkspace",
+          "when": "workspaceFolderCount > 0"
+        },
+        {
+          "command": "antonys-code-fixer.fixWorkspace",
+          "when": "workspaceFolderCount > 0"
+        }
+      ]
+    },
+    "configuration": {
+      "title": "Antony's Code Fixer",
+      "properties": {
+        "antonys-code-fixer.apiKey": {
+          "type": "string",
+          "default": "",
+          "description": "Gemini API Key",
+          "markdownDescription": "Your Gemini API key. Get one from [Google AI Studio](https://makersuite.google.com/app/apikey)"
+        },
+        "antonys-code-fixer.model": {
+          "type": "string",
+          "default": "gemini-1.5-flash",
+          "description": "Gemini model to use",
+          "enum": ["gemini-1.5-flash", "gemini-1.5-pro"]
+        },
+        "antonys-code-fixer.autoHighlight": {
+          "type": "boolean",
+          "default": true,
+          "description": "Automatically highlight changed lines"
+        }
+      }
+    }
+  },
+  "scripts": {
+    "vscode:prepublish": "npm run compile",
+    "compile": "tsc -p ./",
+    "watch": "tsc -watch -p ./"
+  },
+  "devDependencies": {
+    "@types/vscode": "^1.74.0",
+    "@types/node": "16.x",
+    "typescript": "^4.9.4"
+  },
+  "dependencies": {
+    "@google/generative-ai": "^0.2.1"
+  }
+}
